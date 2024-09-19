@@ -4,13 +4,17 @@ import BackgroundController from './components/BackgroundController';
 import Header from './components/Header';
 import IconController from './components/IconController';
 import Sidebar from './components/Sidebar';
+import LogoPreview from './components/LogoPreview';
+import { UpdateStorageContext } from './context/UpdateStorageContext';
 
 function App() {
 
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [updateStorage,setUpdateStorage] = useState({});
 
   return (
-    <>
+    <UpdateStorageContext.Provider value={{updateStorage,setUpdateStorage}}>
+    <div>
       <Header />
       <div className="w-64 fixed">
         <Sidebar selectedIndex={setSelectedIndex} />
@@ -24,10 +28,11 @@ function App() {
         </div>
 
         <div className="md:col-span-4">
-          Icon
+            <LogoPreview/>
         </div>
       </div>
-    </>
+    </div>
+    </UpdateStorageContext.Provider>
   )
 }
 
