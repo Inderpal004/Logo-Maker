@@ -1,17 +1,12 @@
-import { Smile } from 'lucide-react'
-import React, { useContext, useEffect } from 'react';
-import { Slider } from "@/components/ui/slider"
-import { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { Slider } from "@/components/ui/slider";
 import ColorPickerBoxController from './ColorPickerController';
 import { UpdateStorageContext } from '@/context/UpdateStorageContext';
+import IconList from './IconList';
 
 export default function IconController() {
+    const { updateStorage, setUpdateStorage } = useContext(UpdateStorageContext);
 
-    const [size,setSize] = useState(280);
-    const [rotate,setRotate] = useState(0);
-    const [color,setColor] = useState("#fff");
-    const {updateStorage,setUpdateStorage} = useContext(UpdateStorageContext);
-    
     const storageValue = (() => {
         const storedValue = localStorage.getItem('value');
         if (storedValue) {
@@ -22,48 +17,60 @@ export default function IconController() {
                 return {};
             }
         }
-        return {}; 
+        return {};
     })();
 
-    useEffect(()=>{
+    const [size, setSize] = useState(storageValue.iconSize || 200);
+    const [rotate, setRotate] = useState(storageValue.iconRotate || 0);
+    const [color, setColor] = useState(storageValue.iconColor || "#fff");
+    const [icon, setIcon] = useState(storageValue.icon || 'Smile');
+
+    useEffect(() => {
         const updatedValue = {
             ...storageValue,
-            iconSize:size,
-            iconRotate:rotate,
-            iconColor:color,
-            icon:"Smile"
-        }
+            iconSize: size,
+            iconRotate: rotate,
+            iconColor: color,
+            icon: icon 
+        };
 
         setUpdateStorage(updatedValue);
-        localStorage.setItem('value',JSON.stringify(updatedValue));
+        localStorage.setItem('value', JSON.stringify(updatedValue));
+    }, [size, rotate, color, icon]);
 
-    },[size,rotate,color])
 
-  return (
-    <div>
+    return (
         <div>
-            <label>Icon</label>
-            <div className='p-3 cursor-pointer bg-gray-200 rounded-md w-[50px] h-[50px] flex justify-center items-center my-2'>
-            <Smile/>
+            <IconList selectedIcon={(iconName) => setIcon(iconName)} />
+
+            <div className='py-2'>
+                <label className='p-2 flex justify-between items-center'>Size <span>{size}px</span></label>
+                <Slider
+                    defaultValue={[size]}
+                    max={400}
+                    step={1}
+                    onValueChange={(e) => setSize(e[0])}
+                />
             </div>
-        </div>
-        <div className='py-2'>
-            <label className='p-2 flex justify-between items-center'>Size <span>{size}px</span></label>
-            <Slider defaultValue={[280]} max={512} step={1} onValueChange={(e)=> setSize(e[0])}/>
-        </div>
 
-        <div className='py-2'>
-            <label className='p-2 flex justify-between items-center'>Rotate <span>{rotate}°</span></label>
-            <Slider defaultValue={[0]} max={360} step={1} onValueChange={(e)=> setRotate(e[0])}/>
-        </div>
+            <div className='py-2'>
+                <label className='p-2 flex justify-between items-center'>Rotate <span>{rotate}°</span></label>
+                <Slider
+                    defaultValue={[rotate]}
+                    max={360}
+                    step={1}
+                    onValueChange={(e) => setRotate(e[0])}
+                />
+            </div>
 
-        <div className="py-2">
-        <label className='p-2 flex justify-between items-center'>Icon Color</label>
-            <ColorPickerBoxController hideController={true}
-            selectedColor={(color)=> setColor(color)}
-            />
+            <div className="py-2">
+                <label className='p-2 flex justify-between items-center'>Icon Color</label>
+                <ColorPickerBoxController
+                    hideController={true}
+                    selectedColor={(color) => setColor(color)}
+                />
+            </div>
+
         </div>
-      
-    </div>
-  )
+    );
 }

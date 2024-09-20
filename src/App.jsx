@@ -11,24 +11,25 @@ function App() {
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [updateStorage,setUpdateStorage] = useState({});
+  const [downloadIcon,setDownloadIcon] = useState()
 
   return (
     <UpdateStorageContext.Provider value={{updateStorage,setUpdateStorage}}>
     <div>
-      <Header />
+      <Header DownloadIcon={setDownloadIcon}/>
       <div className="w-64 fixed">
         <Sidebar selectedIndex={setSelectedIndex} />
       </div>
 
       <div className="ml-64 grid grid-cols-1 fixed md:grid-cols-6">
-        <div className="md:col-span-2 border pb-10 h-screen shadow-sm p-5 overflow-y-scroll">
+        <div className="md:col-span-2 border pb-20 h-screen shadow-sm p-5 overflow-y-scroll">
           {
             selectedIndex === 0 ? <IconController /> : <BackgroundController />
           }
         </div>
 
         <div className="md:col-span-4">
-            <LogoPreview/>
+            <LogoPreview downloadIcon={downloadIcon}/>
         </div>
       </div>
     </div>
