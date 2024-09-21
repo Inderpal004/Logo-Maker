@@ -59,7 +59,7 @@ export default function LogoPreview({downloadIcon}) {
                     className='w-full h-full bg-slate-400 flex justify-center items-center'
                 >
                     {
-                        storageValue?.icon?.includes(".png") ? <img style={{ transform: `rotate(${storageValue?.iconRotate}deg)` }} width={storageValue?.iconSize} src={BASE_URL+"/png/"+storageValue?.icon} alt="" /> : <Icon
+                        storageValue?.icon?.includes(".png") ? <img style={{ transform: `rotate(${storageValue?.iconRotate}deg)` }} width={storageValue?.iconSize} src={"/png/"+storageValue?.icon} alt="" /> : <Icon
                         name={storageValue?.icon}
                         color={storageValue?.iconColor}
                         size={storageValue?.iconSize}

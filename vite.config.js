@@ -9,4 +9,12 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+
+  server:{
+    port :'3333',
+    strictPort:true,
+    proxy:{
+      '/png':'https://logoexpress.tubeguruji.com'
+    }
+  }
 })
